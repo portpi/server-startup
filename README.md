@@ -1,37 +1,17 @@
-# node-startup
+# server-startup
 
-Startup script for Linux-based systems for running a [Node.js](http://nodejs.org/) app when rebooting, using an **/etc/init.d** script.
-
-
-## Looking for a maintainer
-
-If you use node-startup and would like to be a maintainer, send me a message.
-
-## Why node-startup?
-
-When my VPS was rebooted occassionally by the hosting provider, my Node.js app was not coming back online after boot. This script can be used in **/etc/init.d**, which will allow rc.d to restart your app when the machine reboots without your knowledge.
-
-If you are using [MongoDB](http://www.mongodb.org/), [Redis](http://redis.io/), or [Nginx](http://nginx.org/), you want to add those to your default run-level as well.
-
-## Installation
-
-Clone the repo:
-
-    git clone https://github.com/chovy/node-startup.git
-    cd node-startup/init.d
-
-Edit the **node-app** script with your settings from the **Configuration** section, then follow instructions in the **Running** section.
+Startup script for [PortPi server](https://github.com/portpi/server) when system booting, using an **/etc/init.d** script.
 
 ## Configuration
 
-At the top of the **node-app** file, a few items are declared which are either passed to the Node.js app or used for general execution/management.
+At the top of the **server-startup** file, a few items are declared which are either passed to the Node.js app or used for general execution/management.
 
 ### Node.js Config
 
 The items declared and passed to the Node.js application are:
 
 - **NODE_ENV** - the type of environment - **development**, **production**, etc. - can be read by the application to do things conditionally (defaults to **"production"**)
-- **PORT** - the port that the Node.js application should listen on - should be read by the application and used when starting its server (defaults to **"3000"**)
+- **PORT** - the port that the Node.js application should listen on - should be read by the application and used when starting its server (defaults to **"15926"**)
 - **CONFIG_DIR** - used for [node-config](https://github.com/lorenwest/node-config) (defaults to **"$APP_DIR"**); is required, but should be kept as the default if not needed
 
 ### Execution Config
@@ -49,10 +29,10 @@ The items declared and used by the overall management of executing the applicati
 
 ## Running
 	
-Copy the startup script **node-app** to your **/etc/init.d** directory:
+Copy the startup script **server-startup** to your **/etc/init.d** directory:
 
     sudo bash -l
-    cp ./init.d/node-app /etc/init.d/
+    cp ./init.d/portpi-server /etc/init.d/
 
 ### Available Actions
 
@@ -75,30 +55,20 @@ In addition to the **start**, **stop**, and **restart** actions, a **--force** o
 
 Test that it all works:
 
-    /etc/init.d/node-app start
-    /etc/init.d/node-app status
-    /etc/init.d/node-app restart
-    /etc/init.d/node-app stop
+    /etc/init.d/portpi-server start
+    /etc/init.d/portpi-server status
+    /etc/init.d/portpi-server restart
+    /etc/init.d/portpi-server stop
 
-Add **node-app** to the default runlevels:
+Add **server-startup** to the default runlevels:
 
     # Debian
-    update-rc.d node-app defaults
-    # RHEL, --del to remove
-    chkconfig --add node-app
+    update-rc.d portpi-server defaults
 
 Finally, reboot to be sure the Node.js application starts automatically:
 
     sudo reboot
 
-## Supported OS
-
-Tested with Debian 6.0, but it should work on other Linux systems that use startup scripts in **/etc/init.d** (Red Hat, CentOS, Gentoo, Ubuntu, etc.).
-
 ## LICENSE
 
 (The MIT License)
-
-
-[![Bitdeli Badge](https://d2weczhvl823v0.cloudfront.net/chovy/node-startup/trend.png)](https://bitdeli.com/free "Bitdeli Badge")
-
