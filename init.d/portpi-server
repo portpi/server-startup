@@ -27,14 +27,15 @@ NODE_EXEC=$(which node)
 # Required-Stop:     $network $remote_fs $local_fs
 # Default-Start:     2 3 4 5
 # Default-Stop:      0 1 6
-# Short-Description: start and stop PortPi server
+# Short-Description: PortPi server
 # Description: Node process for PortPi server
 ### END INIT INFO
 
 ###############
 
-USAGE="Usage: $0 {start|stop|restart|status} [--force]"
-FORCE_OP=false
+USAGE="Usage: $0 {start|stop|restart|status}"
+# force everytime to make sure server starts
+FORCE_OP=true
 
 if [ "$(id -u)" != "0" ]; then
    echo "This script must be run as root" 1>&2
